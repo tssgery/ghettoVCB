@@ -24,21 +24,25 @@ Install offline bundle
 esxcli software vib install -d /vghetto-ghettoVCB-offline-bundle.zip -f
 ```
 
-Update VIB
+
+### cron support
+Add the following lines to /etc/rc.local.d/local.sh on your ESXi servers
 ```
-esxcli software vib update -v /vghetto-ghettoVCB.vib -f
+#
+# setup ghettoVCB
+#
+GHETTODIR=/vmfs/volumes/vm/git/ghettoVCB
+# kill cron
+/bin/kill $(cat /var/run/crond.pid) # Gets the cron service pid and simply kills it.
+# The next line writes a typical cron line to the crontab
+/bin/echo "00 07 * * * ${GHETTODIR}/ghettoVCB.sh -g ${GHETTODIR}/ghettoVCB.conf -a -e ${GHETTODIR}/ghettoVCB.exclude > /vmfs/volumes/vmbackup/ghetto/ghettoVCB-backup-\$(hostname -s)-\$(date +%Y-%m-%d-%H%M%S).log" >> /var/spool/cron/crontabs/root
+# Finally we start the cron service again
+/usr/lib/vmware/busybox/bin/busybox crond   
 ```
 
-Update offline bundle
-```
-esxcli software vib update -d /vghetto-ghettoVCB-offline-bundle.zip -f
-```
 
-## Build VIB/Offline Bundle
-
-See the build documentation [here](build/README.md)
-
-## Additional Documentation & Resources
+### Additional Documentation & Resources
+>>>>>>> e1e53ff... adding info on how to add to crontab
 - [ghettoVCB Documentation](http://communities.vmware.com/docs/DOC-8760)
 - [ghettoVCB VMTN Group](http://communities.vmware.com/groups/ghettovcb)
 - [ghettoVCB Restore Documentation](http://communities.vmware.com/docs/DOC-10595)
