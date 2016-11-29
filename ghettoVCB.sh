@@ -12,7 +12,7 @@ LAST_MODIFIED_DATE=2020_12_28
 VERSION=1
 
 # directory that all VM backups should go (e.g. /vmfs/volumes/SAN_LUN1/mybackupdir)
-VM_BACKUP_VOLUME=/vmfs/volumes/mini-local-datastore-hdd/backups
+VM_BACKUP_VOLUME=/vmfs/volumes/vmbackup/ghetto
 
 # Format output of VMDK backup
 # zeroedthick
