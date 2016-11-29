@@ -828,6 +828,7 @@ ghettoVCB() {
             grep -E "^${VM_NAME}" "${VM_EXCLUSION_FILE}" > /dev/null 2>&1
             if [[ $? -eq 0 ]] ; then
                 IGNORE_VM=1
+                logger "info" "Skipping ${VM_NAME} as it appears in the exclusion file: ${VM_EXCLUSION_FILE}\n"
                 #VM_FAILED=0   #Excluded VM is NOT a failure. No need to set here, but listed for clarity
             fi
         fi
