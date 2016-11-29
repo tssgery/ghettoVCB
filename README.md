@@ -26,7 +26,7 @@ esxcli software vib install -d /vghetto-ghettoVCB-offline-bundle.zip -f
 
 
 ### cron support
-Add the following lines to /etc/rc.local.d/local.sh on your ESXi servers
+Add the following lines to /etc/rc.local.d/local.sh on your ESXi servers, and reboot
 ```
 #
 # setup ghettoVCB
