@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#########
+# setup ghettoVCB
+#########
+
+# disable the firewall. We really only need to allow outbound access on port 25/smtp
+esxcli network firewall set --enabled false
+
+# setup our cron job
+# kill cron
+/bin/kill $(cat /var/run/crond.pid) # Gets the cron service pid and simply kills it.
+# The next line writes a typical cron line to the crontab
+/bin/echo "00 07 * * * \"${GHETTODIR}/ghettoVCB.sh\" -g \"${GHETTODIR}/ghettoVCB.conf\" -a -e \"${GHETTODIR}/ghettoVCB.exclude\" > \"${GHETTODIR}/logs/ghettoVCB-backup-\$(hostname -s)-\$(date +%Y-%m-%d-%H%M%S).log\"" >> /var/spool/cron/crontabs/root
+# Finally we start the cron service again
+/usr/lib/vmware/busybox/bin/busybox crond
