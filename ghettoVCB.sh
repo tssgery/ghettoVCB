@@ -806,6 +806,9 @@ ghettoVCB() {
     ORIG_IFS=${IFS}
     IFS='
 '
+    # check how many VMs are found on this ESXi host
+    NUMBER_OF_VMS_FOUND=`cat ${VM_INPUT} | wc -l`
+
     if [[ ${#VM_SHUTDOWN_ORDER} -gt 0 ]] && [[ "${LOG_LEVEL}" != "dryrun" ]]; then
         logger "debug" "VM Shutdown Order: ${VM_SHUTDOWN_ORDER}\n"
         IFS2="${IFS}"
@@ -1292,6 +1295,10 @@ getFinalStatus() {
         FINAL_STATUS="###### Final status: ERROR: All VMs failed! ######"
         LOG_STATUS="ERROR"
         EXIT=6
+    elif [[ $NUMBER_OF_VMS_FOUND == 0 ]]; then
+        FINAL_STATUS="###### Final status: No VMs found to backup! ######"
+        LOG_STATUS="WARNING"
+        EXIT=0      
     elif [[ $VM_OK == 0 ]]; then
         FINAL_STATUS="###### Final status: ERROR: No VMs backed up! ######"
         LOG_STATUS="ERROR"
