@@ -806,7 +806,21 @@ ghettoVCB() {
     ORIG_IFS=${IFS}
     IFS='
 '
-    # check how many VMs are found on this ESXi host
+    # what we should do here is to remove the excluded VMs from the list of VMs to backup
+    # list of files found is in ${VM_INPUT}
+    if [[ "${EXCLUDE_SOME_VMS}" -eq 1 ]] ; then
+      IGNORED_ON_THIS_HOST=`grep -Fx -f "${VM_EXCLUSION_FILE}" "${VM_INPUT}"`
+      logger "info" "****************************************************"
+      logger "info" "Processing VM exclude list"
+      for v in $IGNORED_ON_THIS_HOST; do
+        logger "info" "excluding $v"
+      done
+      logger "info" "****************************************************"
+      grep -Fvx -f "${VM_EXCLUSION_FILE}" "${VM_INPUT}" >/tmp/remaining.list
+      mv /tmp/remaining.list "${VM_INPUT}"
+    fi
+
+    # check how many VMs are found on this ESXi host (that we need to back up)
     NUMBER_OF_VMS_FOUND=`cat ${VM_INPUT} | wc -l`
 
     if [[ ${#VM_SHUTDOWN_ORDER} -gt 0 ]] && [[ "${LOG_LEVEL}" != "dryrun" ]]; then
@@ -1298,7 +1312,7 @@ getFinalStatus() {
     elif [[ $NUMBER_OF_VMS_FOUND == 0 ]]; then
         FINAL_STATUS="###### Final status: No VMs found to backup! ######"
         LOG_STATUS="WARNING"
-        EXIT=0      
+        EXIT=0
     elif [[ $VM_OK == 0 ]]; then
         FINAL_STATUS="###### Final status: ERROR: No VMs backed up! ######"
         LOG_STATUS="ERROR"
