@@ -4,6 +4,7 @@ OpenFLIXR_1.0_VMware
 aces135 - scaleio132-1
 aces136 - scaleio132-2
 aces137 - scaleio132-3
-scaleio1 - 192.168.1.131
+scaleio1 - 192.168.1.134
 scaleio2 - 192.168.1.132
 scaleio3 - 192.168.1.133
+^test.*

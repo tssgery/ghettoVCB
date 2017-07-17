@@ -816,7 +816,7 @@ ghettoVCB() {
         logger "info" "excluding $v"
       done
       logger "info" "****************************************************"
-      grep -Fvx -f "${VM_EXCLUSION_FILE}" "${VM_INPUT}" >/tmp/remaining.list
+      grep -vx -f "${VM_EXCLUSION_FILE}" "${VM_INPUT}" >/tmp/remaining.list
       mv /tmp/remaining.list "${VM_INPUT}"
     fi
 
